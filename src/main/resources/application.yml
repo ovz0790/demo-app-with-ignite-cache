@@ -1,0 +1,15 @@
+server:
+  port: ${PORT_TO_EXPOSE:8085}
+spring:
+  application:
+    name: ignite-demo
+
+cache:
+  ignite:
+    localPort: 47500
+    regionMaxSize: 20971520
+    persistRegionMaxSize: 52428800
+    addresses: 127.0.0.1:47500..47509
+    peerClassLoadingEnabled: true
+    networkTimeout: 60000
+    failureTimeout: 30000

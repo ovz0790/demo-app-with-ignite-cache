@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util.xsd">
+    <!--
+        This is example of different cache configurations
+    -->
+    <bean id="grid.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+        <property name="peerClassLoadingEnabled" value="true"/>
+        <property name="discoverySpi">
+            <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                <property name="localPort" value="47500"/>
+                <property name="ipFinder">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500..47509</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="defConfigCache"/>
+                    <property name="backups" value="1"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="writeSynchronizationMode" value="FULL_ASYNC"/>
+                    <property name="statisticsEnabled" value="false"/>
+                    <property name="onheapCacheEnabled" value="true"/>
+                    <property name="dataRegionName" value="CONFIGURED_BASE_PAGE"/>
+                    <property name="expiryPolicyFactory">
+                        <bean class="javax.cache.expiry.CreatedExpiryPolicy" factory-method="factoryOf">
+                            <constructor-arg name="duration" ref="defaultDuration"/>
+                        </bean>
+                    </property>
+                </bean>
+
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="smallCache"/>
+                    <property name="backups" value="1"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="writeSynchronizationMode" value="FULL_ASYNC"/>
+                    <property name="statisticsEnabled" value="false"/>
+                    <property name="onheapCacheEnabled" value="true"/>
+                    <property name="dataRegionName" value="CONFIGURED_BASE_PAGE"/>
+                    <property name="expiryPolicyFactory">
+                        <bean class="javax.cache.expiry.CreatedExpiryPolicy" factory-method="factoryOf">
+                            <constructor-arg name="duration" ref="smallDuration"/>
+                        </bean>
+                    </property>
+                </bean>
+
+                <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                    <property name="name" value="longCache"/>
+                    <property name="backups" value="1"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="writeSynchronizationMode" value="FULL_ASYNC"/>
+                    <property name="statisticsEnabled" value="false"/>
+                    <property name="onheapCacheEnabled" value="true"/>
+                    <property name="dataRegionName" value="CONFIGURED_BASE_PAGE"/>
+                    <property name="expiryPolicyFactory">
+                        <bean class="javax.cache.expiry.CreatedExpiryPolicy" factory-method="factoryOf">
+                            <constructor-arg name="duration" ref="longDuration"/>
+                        </bean>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+        <property name="dataStorageConfiguration">
+            <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+                <property name="defaultDataRegionConfiguration">
+                    <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+                        <property name="name" value="CONFIGURED_BASE_PAGE"/>
+                        <property name="persistenceEnabled" value="false"/>
+                        <property name="pageEvictionMode" value="DISABLED"/>
+                        <property name="maxSize" value="1009715200"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean class="javax.cache.expiry.Duration" name="defaultDuration">
+        <constructor-arg name="durationAmount" value="1"/>
+        <constructor-arg name="timeUnit" value="HOURS"/>
+    </bean>
+
+    <bean class="javax.cache.expiry.Duration" name="longDuration">
+        <constructor-arg name="durationAmount" value="1"/>
+        <constructor-arg name="timeUnit" value="DAYS"/>
+    </bean>
+
+
+    <bean class="javax.cache.expiry.Duration" name="smallDuration">
+        <constructor-arg name="durationAmount" value="5"/>
+        <constructor-arg name="timeUnit" value="MINUTES"/>
+    </bean>
+</beans>

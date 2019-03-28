@@ -1,0 +1,15 @@
+#This project is example of building scalable application with shared cache based on Apache Ignite tool.
+
+#This application instance could be multiplied and all instances will see cache content as shared between nodes.
+
+##Build and run application:
+
+mvn clean package
+
+##Run application:
+
+java -jar ~target/caching-presentation.jar
+
+##Run application with docker-compose:
+
+docker-compose up

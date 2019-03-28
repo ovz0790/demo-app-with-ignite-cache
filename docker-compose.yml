@@ -1,0 +1,11 @@
+version: '2.3'
+services:
+  igniteapp:
+    init: true
+    build:
+      context: .
+      dockerfile: Dockerfile.ignite
+    networks:
+      default:
+        aliases:
+          - ignite.ntw
